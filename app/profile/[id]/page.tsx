@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Github, Linkedin, Twitter, Globe, ExternalLink, ArrowLeft } from 'lucide-react';
+import { Github, Linkedin, Twitter, Globe, Facebook, Instagram, ExternalLink, ArrowLeft } from 'lucide-react';
 import type { Profile } from '@/lib/supabase';
 
 export const dynamic = 'force-dynamic'; // Force dynamic rendering
@@ -38,6 +38,8 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
     { icon: Linkedin, url: profile.socials.linkedin, label: 'LinkedIn' },
     { icon: Twitter, url: profile.socials.twitter, label: 'Twitter' },
     { icon: Globe, url: profile.socials.website, label: 'Website' },
+    { icon: Facebook, url: profile.socials.facebook, label: 'Facebook' },
+    { icon: Instagram, url: profile.socials.instagram, label: 'Instagram' },
   ].filter(link => link.url);
 
   return (

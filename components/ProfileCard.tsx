@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Github, Linkedin, Twitter, Globe } from 'lucide-react';
+import { Github, Linkedin, Twitter, Globe, Facebook, Instagram } from 'lucide-react';
 import { Profile } from '@/lib/supabase';
 
 export default function ProfileCard({ profile }: { profile: Profile }) {
@@ -58,6 +58,16 @@ export default function ProfileCard({ profile }: { profile: Profile }) {
               {profile.socials.website && (
                 <div className="text-muted-foreground hover:text-foreground transition-colors">
                   <Globe className="h-5 w-5" />
+                </div>
+              )}
+              {profile.socials.facebook && (
+                <div className="text-muted-foreground hover:text-foreground transition-colors">
+                  <Facebook className="h-5 w-5" />
+                </div>
+              )}
+              {profile.socials.instagram && (
+                <div className="text-muted-foreground hover:text-foreground transition-colors">
+                  <Instagram className="h-5 w-5" />
                 </div>
               )}
             </div>

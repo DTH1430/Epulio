@@ -27,6 +27,8 @@ export type Profile = {
     linkedin?: string;
     twitter?: string;
     website?: string;
+    facebook?: string;
+    instagram?: string;
   };
   projects?: {
     title: string;

@@ -190,6 +190,28 @@ export default function ProfileForm({ profile, onSubmit, onCancel }: ProfileForm
               placeholder="https://yourwebsite.com"
             />
           </div>
+          <div>
+            <label className="block text-sm font-medium mb-2">Facebook</label>
+            <Input
+              value={formData.socials.facebook || ''}
+              onChange={(e) => setFormData(prev => ({
+                ...prev,
+                socials: { ...prev.socials, facebook: e.target.value }
+              }))}
+              placeholder="https://facebook.com/username"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-2">Instagram</label>
+            <Input
+              value={formData.socials.instagram || ''}
+              onChange={(e) => setFormData(prev => ({
+                ...prev,
+                socials: { ...prev.socials, instagram: e.target.value }
+              }))}
+              placeholder="https://instagram.com/username"
+            />
+          </div>
         </CardContent>
       </Card>
 
