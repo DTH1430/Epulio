@@ -68,7 +68,7 @@ export default function Navbar() {
               </div>
             ) : (
               <Link href="/admin">
-                <Button variant="outline" size="sm">
+                <Button variant={pathname === '/' ? 'default' : 'outline'} size="sm">
                   <User className="h-4 w-4 mr-2" />
                   Admin Login
                 </Button>
