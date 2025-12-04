@@ -16,8 +16,16 @@ export const supabase = createClient(
   supabaseAnonKey || 'placeholder-anon-key'
 );
 
+export type UserRole = {
+  id: string;
+  user_id: string;
+  role: 'user' | 'admin';
+  created_at: string;
+};
+
 export type Profile = {
   id: string;
+  user_id: string;
   name: string;
   bio: string;
   photo_url: string;

@@ -38,3 +38,5 @@ vercel.json
 next-env.d.ts
 
 .vercel
+AUTH_GUIDE.md
+AUTH_SETUP.md
