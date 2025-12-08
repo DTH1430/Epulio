@@ -10,14 +10,12 @@ import { useEffect, useState, useCallback, memo } from 'react';
 function Navbar() {
   const pathname = usePathname();
   const [user, setUser] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     let mounted = true;
     getUser().then(currentUser => {
       if (mounted) {
         setUser(currentUser);
-        setIsLoading(false);
       }
     });
     return () => { mounted = false; };

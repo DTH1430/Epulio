@@ -176,9 +176,9 @@ export default function AdminPage() {
   }, [user?.id, userRole?.role]);
 
   const { userProfiles, displayProfiles } = useMemo(() => {
-    const userProfs = profiles.filter(p => p.user_id === user?.id);
-    const displayProfs = userRole?.role === 'admin' ? profiles : userProfs;
-    return { userProfiles: userProfs, displayProfiles: displayProfs };
+    const userProfiles = profiles.filter(p => p.user_id === user?.id);
+    const displayProfiles = userRole?.role === 'admin' ? profiles : userProfiles;
+    return { userProfiles, displayProfiles };
   }, [profiles, user?.id, userRole?.role]);
 
   if (loading) {
