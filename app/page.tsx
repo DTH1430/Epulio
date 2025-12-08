@@ -2,7 +2,7 @@ import { supabase } from '@/lib/supabase';
 import ProfileCard from '@/components/ProfileCard';
 import type { Profile } from '@/lib/supabase';
 
-export const dynamic = 'force-dynamic'; // Force dynamic rendering
+export const revalidate = 60; // Revalidate every 60 seconds
 
 async function getProfiles(): Promise<Profile[]> {
   const { data, error } = await supabase

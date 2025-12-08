@@ -5,21 +5,29 @@ import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { User, LogOut } from 'lucide-react';
 import { signOut, getUser } from '@/lib/auth';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, memo } from 'react';
 
-export default function Navbar() {
+function Navbar() {
   const pathname = usePathname();
   const [user, setUser] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    getUser().then(setUser);
+    let mounted = true;
+    getUser().then(currentUser => {
+      if (mounted) {
+        setUser(currentUser);
+        setIsLoading(false);
+      }
+    });
+    return () => { mounted = false; };
   }, []);
 
-  const handleSignOut = async () => {
+  const handleSignOut = useCallback(async () => {
     await signOut();
     setUser(null);
     window.location.href = '/';
-  };
+  }, []);
 
   return (
     <nav className="border-b bg-background">
@@ -80,3 +88,5 @@ export default function Navbar() {
     </nav>
   );
 }
+
+export default memo(Navbar);
