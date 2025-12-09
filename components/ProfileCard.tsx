@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -5,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Github, Linkedin, Twitter, Globe, Facebook, Instagram } from 'lucide-react';
 import { Profile } from '@/lib/supabase';
 
-export default function ProfileCard({ profile }: { profile: Profile }) {
+function ProfileCard({ profile }: { profile: Profile }) {
   return (
     <Link href={`/profile/${profile.id}`}>
       <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer">
@@ -16,6 +17,7 @@ export default function ProfileCard({ profile }: { profile: Profile }) {
                 src={profile.photo_url}
                 alt={profile.name}
                 fill
+                sizes="80px"
                 className="object-cover"
               />
             </div>
@@ -77,3 +79,5 @@ export default function ProfileCard({ profile }: { profile: Profile }) {
     </Link>
   );
 }
+
+export default memo(ProfileCard);

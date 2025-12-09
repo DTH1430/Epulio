@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Github, Linkedin, Twitter, Globe, Facebook, Instagram, ExternalLink, ArrowLeft } from 'lucide-react';
 import type { Profile } from '@/lib/supabase';
 
-export const dynamic = 'force-dynamic'; // Force dynamic rendering
+export const revalidate = 60; // Revalidate every 60 seconds
 
 async function getProfile(id: string): Promise<Profile | null> {
   const { data, error } = await supabase
@@ -57,6 +57,8 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
               src={profile.photo_url}
               alt={profile.name}
               fill
+              sizes="(max-width: 768px) 100vw, 192px"
+              priority
               className="object-cover"
             />
           </div>
@@ -135,6 +137,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
                           src={project.image}
                           alt={project.title}
                           fill
+                          sizes="(max-width: 768px) 100vw, 1024px"
                           className="object-cover"
                         />
                       </div>

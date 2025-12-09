@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
 import { signIn, signUp, getUser, getCurrentUserRole } from '@/lib/auth';
 import ProfileForm from '@/components/ProfileForm';
@@ -25,28 +25,43 @@ export default function AdminPage() {
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
 
   useEffect(() => {
-    checkUser();
+    let mounted = true;
+    
+    async function initialize() {
+      const currentUser = await getUser();
+      if (!mounted) return;
+      
+      setUser(currentUser);
+      setLoading(false);
+      
+      if (currentUser) {
+        // Fetch both profiles and user role in parallel
+        const [profilesResult, role] = await Promise.all([
+          supabase
+            .from('profiles')
+            .select('*')
+            .order('created_at', { ascending: false }),
+          getCurrentUserRole()
+        ]);
+        
+        if (!mounted) return;
+        
+        if (profilesResult.data) {
+          setProfiles(profilesResult.data);
+        }
+        if (profilesResult.error) {
+          console.error('Error fetching profiles:', profilesResult.error);
+        }
+        setUserRole(role);
+      }
+    }
+    
+    initialize();
+    
+    return () => { mounted = false; };
   }, []);
 
-  useEffect(() => {
-    if (user) {
-      fetchProfiles();
-      fetchUserRole();
-    }
-  }, [user]);
-
-  const checkUser = async () => {
-    const currentUser = await getUser();
-    setUser(currentUser);
-    setLoading(false);
-  };
-
-  const fetchUserRole = async () => {
-    const role = await getCurrentUserRole();
-    setUserRole(role);
-  };
-
-  const fetchProfiles = async () => {
+  const fetchProfiles = useCallback(async () => {
     try {
       const { data, error} = await supabase
         .from('profiles')
@@ -58,7 +73,7 @@ export default function AdminPage() {
     } catch (err) {
       console.error('Error fetching profiles:', err);
     }
-  };
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -156,12 +171,15 @@ export default function AdminPage() {
     }
   };
 
-  const canEditProfile = (profile: Profile) => {
+  const canEditProfile = useCallback((profile: Profile) => {
     return profile.user_id === user?.id || userRole?.role === 'admin';
-  };
+  }, [user?.id, userRole?.role]);
 
-  const userProfiles = profiles.filter(p => p.user_id === user?.id);
-  const displayProfiles = userRole?.role === 'admin' ? profiles : userProfiles;
+  const { userProfiles, displayProfiles } = useMemo(() => {
+    const userProfiles = profiles.filter(p => p.user_id === user?.id);
+    const displayProfiles = userRole?.role === 'admin' ? profiles : userProfiles;
+    return { userProfiles, displayProfiles };
+  }, [profiles, user?.id, userRole?.role]);
 
   if (loading) {
     return (
